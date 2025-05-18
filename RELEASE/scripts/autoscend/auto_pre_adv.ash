@@ -95,7 +95,7 @@ void auto_ghost_prep(location place)
 	{
 		return;		//no ghosts no problem
 	}
-	if(in_plumber())
+	if(in_plumber() || in_pokefam())
 	{
 		return;		//these paths either have their own ghost handling. or can always kill ghosts
 	}
