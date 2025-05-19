@@ -1314,7 +1314,7 @@ boolean L12_sonofaBeach()
 	}
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
-		if(get_property("sidequestJunkyardCompleted") == "none")
+		if(get_property("sidequestJunkyardCompleted") == "none" && !in_pokefam())
 		{
 			return false;
 		}
