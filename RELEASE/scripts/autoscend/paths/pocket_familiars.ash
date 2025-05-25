@@ -31,19 +31,72 @@ string pokefam_defaultMaximizeStatement()
 	return res;
 }
 
-boolean pokefam_makeTeam()
+int pokefam_currentPokedollars()
 {
-	if(in_pokefam())
+	// Visit the pokemporium to collect pokedollars for leveling up familiars
+	visit_url("shop.php?whichshop=pokefam");
+	return available_amount($item["1\,960 pok&eacute;dollar bill"]);
+}
+
+void pokefam_purchaseBestCap()
+{
+	// Only spend pokedollars on caps. Helix Fossil handles the familiar selection,
+	// so we wouldn't know what fams to use the vitamins on anyway.
+	item best_cap = $item[none];
+	// Avarice is 100% item drop, Sloth is -15% combat rate, Wrath is +30 ML, Mu is +4 all res.
+	foreach cap in $items[Team Avarice Cap, Team Sloth Cap, Team Wrath Cap, Mu Cap]
 	{
-		// Choose "strongest 2" in order to allow a middle spot for a pocket familiar to level up and earn pokebucks.
-		if(git_exists("Ezandora-Helix-Fossil"))
+		if(!possessEquipment(cap))
 		{
-		auto_log_info("Setting our team via Ezandora:", "green");
-		boolean ignore = cli_execute("PocketFamiliarsAutoSelect Strongest 2;");
-		return true;
+			best_cap = cap;
+			break;
 		}
-	}	
-	return true;
+	}
+
+	if(best_cap == $item[none])
+	{
+		set_property("auto_buyPokefamCaps", false);
+		auto_log_info("You have all 4 team caps now or don't need any of them, so there's nothing left worth saving for.");
+		return;
+	}
+
+	// We can afford it and should buy it to see if there's something else we want to save for.
+	if(!buy($coinmaster[The Pok&eacute;mporium], 1, best_cap))
+	{
+		auto_log_error("Pokemporium Cap purchase failed. If this happens repeatedly manually set auto_buyPokefamCaps to false");
+	}
+}
+
+void pokefam_makeTeam(location place)
+{
+	if(!in_pokefam())
+	{
+		return;
+	}
+
+    // Check if we can buy a team cap from the pokemporium, and if we can do so.
+	if(pokefam_currentPokedollars() >= 50 && get_property("auto_buyPokefamCaps").to_boolean())
+	{
+		return true;
+	}
+
+	if(git_exists("Ezandora-Helix-Fossil"))
+	{
+		// The argument to the script is the max desired number of level 5 fams to include. It's 2 when we have
+		// something to buy in order to allow a middle spot for a pocket familiar to level up and earn pokebucks.
+		// It might be worth trying to use only 1 level 5 familiar if we have a level 5 slotter.
+		auto_log_info("Setting our team via Ezandora:", "green");
+		int max_level_5_fams = 2;
+		if(get_property("_auto_pokefamLosses").to_int() > 20)
+		{
+			max_level_5_fams = 3;
+		}
+		else if(in_terrarium($familiar[slotter])) // Ezandora's script will always use slotter
+		{
+			max_level_5_fams = 1;
+		}
+		cli_execute("PocketFamiliarsAutoSelect Strongest " + max_level_5_fams);
+	}
 }
 
 boolean L12_pokefam_clearBattlefield()
