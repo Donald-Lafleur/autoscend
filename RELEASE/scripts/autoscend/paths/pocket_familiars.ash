@@ -67,7 +67,7 @@ void pokefam_purchaseBestCap()
 	}
 }
 
-void pokefam_makeTeam(location place)
+void pokefam_makeTeam()
 {
 	if(!in_pokefam())
 	{
