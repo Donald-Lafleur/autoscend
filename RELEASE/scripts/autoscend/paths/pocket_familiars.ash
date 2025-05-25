@@ -12,8 +12,6 @@ void pokefam_initializeSettings()
 		set_property("auto_ignoreRestoreFailure", true);
 		// No need for a beehive as combat is different.
 		set_property("auto_getBeehive", false);
-		// We can't flyer, so better to do the war as a hippy.
-		set_property("auto_hippyInstead", true);
 		set_property("auto_ignoreFlyer", true);
 		// No Naughty Sorceress so no need for a wand.
 		set_property("auto_wandOfNagamar", false);
