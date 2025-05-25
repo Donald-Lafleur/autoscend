@@ -15,6 +15,7 @@ void pokefam_initializeSettings()
 		set_property("auto_ignoreFlyer", true);
 		// No Naughty Sorceress so no need for a wand.
 		set_property("auto_wandOfNagamar", false);
+		set_property("auto_buyPokefamCaps", true);
 	}
 }
 
