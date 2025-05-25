@@ -35,7 +35,7 @@ int pokefam_currentPokedollars()
 {
 	// Visit the pokemporium to collect pokedollars for leveling up familiars
 	visit_url("shop.php?whichshop=pokefam");
-	return available_amount($item["1\,960 pok&eacute;dollar bill"]);
+	return available_amount($item[1\,960 pok&eacute;dollar bill]);
 }
 
 void pokefam_purchaseBestCap()
@@ -77,7 +77,7 @@ void pokefam_makeTeam(location place)
     // Check if we can buy a team cap from the pokemporium, and if we can do so.
 	if(pokefam_currentPokedollars() >= 50 && get_property("auto_buyPokefamCaps").to_boolean())
 	{
-		return true;
+		pokefam_purchaseBestCap();
 	}
 
 	if(git_exists("Ezandora-Helix-Fossil"))
