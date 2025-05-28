@@ -32,8 +32,10 @@ string pokefam_defaultMaximizeStatement()
 
 int pokefam_currentPokedollars()
 {
-	// Visit the pokemporium to collect pokedollars for leveling up familiars
-	visit_url("shop.php?whichshop=pokefam");
+	// Visit the pokemporium to collect pokedollars for leveling up familiars.
+	// For whatever reason this only works if you do it this way. Using visit_url
+	// causes the available amount value to be changed to the amount gained when visiting. 
+	cli_execute("shop.php?whichshop=pokefam");
 	return available_amount($item[1\,960 pok&eacute;dollar bill]);
 }
 
